@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if messages %}
+{% for m in messages %}
+<div class="alert {% if m.tags == 'error' %} alert-danger {% elif m.tags == 'success' %} alert-success {% endif %} mt-2" role="alert">
+    {% if m.tags == 'error' %}
+    <h4 class="alert-heading">Error!</h4>
+    {% elif m.tags == 'success' %}
+    <h4 class="alert-heading">Success!</h4>
+    {% endif %}
+    <p>{{ m }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="banner-container row bg-dark px-4" >
+    <div class="heading-banner text-white col-5 ">
+        <h1 style="margin-top: 130px;">Ancestra</h1>
+        <p class="mt-5">Welcome to the Ancestra Library, a vibrant hub of knowledge, community, and discovery. Our library, housed in a beautifully restored historic building, serves as a sanctuary for book lovers, students, researchers, and families alike. With an extensive collection of books, magazines, digital resources, and a host of engaging programs and events, we strive to inspire and educate visitors of all ages. Whether you're here to dive into a novel, attend a workshop, or simply enjoy a quiet space to study, the Grand Central Public Library is dedicated to supporting your intellectual and cultural growth. Explore, learn, and connect with us today!</p>
+    </div>
+    <div class="image-banner col-7">
+        <img src="{% static '\image\library.jpeg' %}" alt="library inside" >
+    </div>
+</div>
+
+<div class="container row mt-5">
+    <div class="category col-3">
+        <h2 style="color: rgb(231, 77, 11);">Categories</h2>
+        <ul>
+            {% for category in categories %}
+                <button class="btn btn-success"><a href="{% url 'category_home' category.slug %}" class="text-white text-decoration-none">{{ category.name }}</a></button>
+                <br>
+                <br>
+            {% endfor %}
+        </ul>    </div>
+    <div class="books d-flex flex-wrap col-9 me-0">
+        {% for book in books %}
+        <div class="order-books col-md-4 mb-4 ">
+            <div class="card mx-5" style="width: 18rem;">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p>{{ book.author }}</p>
+                    <p>{{ book.description | truncatewords:10  }}</p>
+                    <h6>Price: {{ book.price }}</h6>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'details' book.id %}" class="btn btn-primary">Details</a>
+                    {% else %}
+                    <small>Login to see the details</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

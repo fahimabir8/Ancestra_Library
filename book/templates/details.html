@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if messages %}
+{% for m in messages %}
+<div class="alert {% if m.tags == 'error' %} alert-danger {% elif m.tags == 'success' %} alert-success {% endif %} mt-2" role="alert">
+    {% if m.tags == 'error' %}
+    <h4 class="alert-heading">Error!</h4>
+    {% elif m.tags == 'success' %}
+    <h4 class="alert-heading">Success!</h4>
+    {% endif %}
+    <p>{{ m }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="container d-flex px-5 mt-5 justify-content-center" >
+    <div class="card" style="width: 20rem;">
+        <img src="{{ book.image.url }}" class="card-img-top" alt="..." />
+    </div>
+    <div class="card text-center m-3 bg-dark" style="width: 25rem;">
+        <div class="card-body text-white">
+            <h3 class="card-title">{{ book.title }}</h3>
+            <p class="card-text">{{ book.description }}</p>
+            <h5>Price: {{ book.price }}</h5>
+            <h5>Category: {{ book.category }}</h5>
+            <form method="post" action="{% url 'buy_book' book.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning m-4">Borrow</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="review">
+    <h1 class="display-3 text-center"> Reviews</h1>
+
+    <div class="card">
+        <div class="card-body">
+            {% for val in reviews %}
+                <p>{{ val.created_on }}</p>
+                <p>{{ val.area }}</p>
+                <hr />
+            {% endfor %}
+        </div>
+    </div>
+    <h2>Add Review</h2>
+
+{% if user_purchased  %}
+    <div class="card">
+        <div class="card-body">
+            <form method="post" style="width: 50%;">
+                {% csrf_token %}
+                {{ review_form|crispy }}
+                <button class="btn btn-danger">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+
+<h1 class="text-center">You have to buy the book first</h1>
+
+{% endif %}
+
+{% endblock %}

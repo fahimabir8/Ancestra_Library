@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if messages %}
+{% for m in messages %}
+<div class="alert {% if m.tags == 'error' %} alert-danger {% elif m.tags == 'success' %} alert-success {% endif %} mt-2" role="alert">
+    {% if m.tags == 'error' %}
+    <h4 class="alert-heading">Error!</h4>
+    {% elif m.tags == 'success' %}
+    <h4 class="alert-heading">Success!</h4>
+    {% endif %}
+    <p>{{ m }}</p>
+</div>
+{% endfor %}
+{% endif %}
+<h1 class="display-1 text-center"> Profile Page</h1>
+
+<div class="banner row">
+  <div class="image col-5">
+    <img src="{% static '\image\profile.png' %}" class="rounded mx-auto d-block profile" alt="profile picture">
+  </div>
+  <div class="intro col-7 p-5 mt-3">
+    <h2 class="display-6">Username: <b>{{user.username}}</b></h2>
+    <h2 class="display-6">First Name: <b>{{user.first_name}}</b></h2>
+    <h2 class="display-6">Last Name: <b>{{user.last_name}}</b></h2>
+    <h2 class="display-6">Email: <b>{{user.email}}</b></h2>
+  </div>
+
+</div>
+
+<h1 class="display-4 text-center">History</h1>
+
+<table class="table table-success table-striped mt-5 pt-5 mx-auto" style="width: 80%;">
+    <thead>
+        <tr>
+          <th scope="col">Book id</th>
+          <th scope="col">Book</th>
+          <th scope="col">Price</th>
+          <th scope="col">Purchase Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <th scope="row">{{book.book.id}}</th>
+          <td>{{book.book.title}}</td>
+          <td>{{book.book.price}}</td>
+          <td>{{book.date_purchased}}</td>
+        </tr>
+        {% endfor %}
+    
+      </tbody>
+</table>
+
+{% endblock %}
