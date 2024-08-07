@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 import dj_database_url
 
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -148,6 +149,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
 STATICFILES_DIRS = [
     BASE_DIR/'static',
 ]
